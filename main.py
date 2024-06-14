@@ -17,7 +17,7 @@ import os
 parser = argparse.ArgumentParser(description='PyTorch ABCOR')
 parser.add_argument('--model_name', type=str, default='ABCOR',
                     help='model name')
-parser.add_argument('--dataset', type=str, default='synthetic',
+parser.add_argument('--dataset', type=str, default='meituan',
                     help='dataset name')
 parser.add_argument('--data_path', type=str, default='../data/',
                     help='directory of all datasets')
@@ -118,36 +118,26 @@ if args.ood_finetune:
     train_path = data_path + '{}/training_list_{}%.npy'.format('X_ood',args.X)
     if args.X == 0:
         train_path = data_path + '{}/training_list.npy'.format(ood_test_dataset)
-if args.dataset=='synthetic':
-    user_feat_path = data_path + '{}/user_preference.npy'.format(train_dataset)
-else:
-    user_feat_path = data_path + '{}/user_feature.npy'.format(train_dataset)
+
+user_feat_path = data_path + '{}/user_feature.npy'.format(train_dataset)
 item_feat_path = data_path + '{}/item_feature.npy'.format(train_dataset)
 
 train_data, valid_x_data, valid_y_data, test_x_data, test_y_data, n_users, n_items = \
                                             data_utils.data_load(train_path, valid_path, test_path, args.dataset)
 user_feature, item_feature = data_utils.feature_load(user_feat_path, item_feat_path)
-if args.dataset=='synthetic':
-    user_feature = user_feature[:,0:1]
-    item_feature = torch.FloatTensor(item_feature[:,1:9]).to(device)
-else:
-    item_feature = torch.FloatTensor(item_feature).to(device)
+item_feature = torch.FloatTensor(item_feature).to(device)
 
 # ood data for testing on ood data
 if args.ood_test:
     ood_train_path = data_path + '{}/training_list.npy'.format(ood_test_dataset)
     ood_valid_path = data_path + '{}/validation_dict.npy'.format(ood_test_dataset)
     ood_test_path = data_path + '{}/testing_dict.npy'.format(ood_test_dataset)
-    if args.dataset=='synthetic':
-        ood_user_feat_path = data_path + '{}/user_preference.npy'.format(ood_test_dataset)
-    else:
-        ood_user_feat_path = data_path + '{}/user_feature.npy'.format(ood_test_dataset)
+    ood_user_feat_path = data_path + '{}/user_feature.npy'.format(ood_test_dataset)
     ood_item_feat_path = data_path + '{}/item_feature.npy'.format(ood_test_dataset)
     ood_train_data, ood_valid_x_data, ood_valid_y_data, ood_test_x_data, ood_test_y_data, ood_n_users, ood_n_items = \
                                         data_utils.data_load(ood_train_path, ood_valid_path, ood_test_path, args.dataset)
     ood_user_feature, ood_item_feature = data_utils.feature_load(ood_user_feat_path, ood_item_feat_path)
-    if args.dataset=='synthetic':
-        ood_user_feature = ood_user_feature[:,0:1]
+
 N = train_data.shape[0]
 idxlist = list(range(N))
 
