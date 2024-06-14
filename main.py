@@ -14,14 +14,12 @@ import data_utils
 import evaluate_util
 import os
 
-parser = argparse.ArgumentParser(description='PyTorch COR')
-parser.add_argument('--model_name', type=str, default='COR',
+parser = argparse.ArgumentParser(description='PyTorch ABCOR')
+parser.add_argument('--model_name', type=str, default='ABCOR',
                     help='model name')
 parser.add_argument('--dataset', type=str, default='synthetic',
                     help='dataset name')
-'''parser.add_argument('--data_path', type=str, default='../data/',
-                    help='directory of all datasets')'''
-parser.add_argument('--data_path', type=str, default='data/ABCOR/data/',
+parser.add_argument('--data_path', type=str, default='../data/',
                     help='directory of all datasets')
 parser.add_argument('--log_name', type=str, default='',
                     help='log/model special name')
@@ -71,9 +69,7 @@ parser.add_argument('--gpu', type=str, default='1',
                     help='GPU id')
 parser.add_argument("--ood_test", default=True,
                     help="whether test ood data during iid training")
-'''parser.add_argument('--save_path', type=str, default='./new_models/',
-                    help='path to save the final model')'''
-parser.add_argument('--save_path', type=str, default='data/ABCOR/codes/new_models/',
+parser.add_argument('--save_path', type=str, default='./models/',
                     help='path to save the final model')
 parser.add_argument('--act_function', type=str, default='tanh',
                     help='activation function')
