@@ -52,11 +52,8 @@ class ABCORV(nn.Module):
             self.batchnorm = nn.BatchNorm1d(E1_size)
         
         self.init_weights()
-        #change2:实例化注意力
+                                                         
         self.attentionp2 = Attention(attention_type='dot',hidden_size=temp_p2_dims[-1])
-        #self.attentionp2 = Attention(attention_type='cosine',hidden_size=temp_p2_dims[-1])
-        #self.attentionp2 = Attention(attention_type='mlp',hidden_size=temp_p2_dims[-1])
-
 
     def reuse_Z2(self,D,E1):
         if self.bn:
@@ -96,16 +93,16 @@ class ABCORV(nn.Module):
             E1 = self.batchnorm(E1)
         D = F.normalize(D) # meituan and yelp
         encoder_input = torch.cat((D, E1), 1)  # D,E1
-        mu, logvar, keyh = self.encode(encoder_input)    # E2 distribution  #change4
+        mu, logvar, keyh = self.encode(encoder_input)    # E2 distribution  
         E2 = self.reparameterize(mu, logvar)       # E2
         
         if CI == 1: # D=NULL
             encoder_input_0 = torch.cat((torch.zeros_like(D), E1), 1)
-            mu_0, logvar_0, keyh_0 = self.encode(encoder_input_0) #change5  #Change-1
+            mu_0, logvar_0, keyh_0 = self.encode(encoder_input_0) 
             E2_0 = self.reparameterize(mu_0, logvar_0)
-            scores = self.decode(E1, E2, keyh, E2_0, keyh_0,Z2_reuse)  #change6 #Change-2
+            scores = self.decode(E1, E2, keyh, E2_0, keyh_0,Z2_reuse)  
         else:
-            scores = self.decode(E1, E2, keyh, None, None, Z2_reuse)  #change7 #Change-3
+            scores = self.decode(E1, E2, keyh, None, None, Z2_reuse)  
         reg_loss = self.reg_loss()
         return scores, mu, logvar, reg_loss
 
@@ -128,7 +125,7 @@ class ABCORV(nn.Module):
         else:
             return mu
  
-    def decode(self, E1, E2, keyh, E2_0=None, keyh_0=None, Z2_reuse=None): #change8 #Change-4
+    def decode(self, E1, E2, keyh, E2_0=None, keyh_0=None, Z2_reuse=None): 
 
         if E2_0 is None:
             attn_p2 = E2
@@ -335,7 +332,6 @@ class ABCORV(nn.Module):
         return reg_loss
 
 
-#change1:定义注意力类
 class Attention(nn.Module):
     def __init__(self,attention_type='dot',hidden_size=256):
         super(Attention, self).__init__()
@@ -438,7 +434,7 @@ class ABCORM(nn.Module):
             self.batchnorm = nn.BatchNorm1d(E1_size)
         
         self.init_weights()
-        #change2:实例化注意力
+
         self.attentionz1 = MultiHeadSelfAttention(hidden_dim = self.mlp_p1_dims[-1], num_heads = 10)
         self.attentionz2 = MultiHeadSelfAttention(hidden_dim = self.mlp_p2_dims[-1], num_heads = 10)
     
@@ -462,16 +458,16 @@ class ABCORM(nn.Module):
             E1 = self.batchnorm(E1)
         D = F.normalize(D) # meituan and yelp
         encoder_input = torch.cat((D, E1), 1)  # D,E1
-        mu, logvar = self.encode(encoder_input)    # E2 distribution  #change4
+        mu, logvar = self.encode(encoder_input)    # E2 distribution  
         E2 = self.reparameterize(mu, logvar)       # E2
         
         if CI == 1: # D=NULL
             encoder_input_0 = torch.cat((torch.zeros_like(D), E1), 1)
-            mu_0, logvar_0 = self.encode(encoder_input_0) #change5  #Change-1
+            mu_0, logvar_0 = self.encode(encoder_input_0)  
             E2_0 = self.reparameterize(mu_0, logvar_0)
-            scores = self.decode(E1, E2, E2_0, Z2_reuse)  #change6 #Change-2
+            scores = self.decode(E1, E2, E2_0, Z2_reuse)  
         else:
-            scores = self.decode(E1, E2, None,  Z2_reuse)  #change7 #Change-3
+            scores = self.decode(E1, E2, None,  Z2_reuse)  
         reg_loss = self.reg_loss()
         return scores, mu, logvar, reg_loss
 
@@ -494,7 +490,7 @@ class ABCORM(nn.Module):
         else:
             return mu
  
-    def decode(self, E1, E2, E2_0=None, Z2_reuse=None): #change8 #Change-4
+    def decode(self, E1, E2, E2_0=None, Z2_reuse=None): 
     
         if E2_0 is None:
             h_p1 = torch.cat((E1, E2), 1) #change9
@@ -645,12 +641,10 @@ class MultiHeadSelfAttention(nn.Module):
     def forward(self, x):
         batch_size, seq_len, hidden_dim = x.size() 
         
-        # 将输入向量拆分为多个头
         q = self.query(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
         k = self.key(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
         v = self.value(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
     
-        #计算注意力权重
         attention_weights = torch.matmul(q, k.transpose(-2,-1))/torch.sqrt(torch.tensor(self.head_dim, dtype=torch.float))
         attention_weights = torch.softmax(attention_weights, dim=-1)
         
