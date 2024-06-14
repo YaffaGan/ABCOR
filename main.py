@@ -17,7 +17,7 @@ import os
 parser = argparse.ArgumentParser(description='PyTorch ABCOR')
 parser.add_argument('--model_name', type=str, default='ABCOR',
                     help='model name')
-parser.add_argument('--dataset', type=str, default='meituan',
+parser.add_argument('--dataset', type=str, default='synthetic',
                     help='dataset name')
 parser.add_argument('--data_path', type=str, default='../data/',
                     help='directory of all datasets')
