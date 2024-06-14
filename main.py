@@ -309,8 +309,8 @@ best_test_results = None
 best_ood_test_results = None
 update_count = 0
 
-# recall@10 for best model selection when K=0, recall@50 when K=2
-K = 0 if args.dataset == 'synthetic' else 2
+# recall@50 when K=2
+K = 2
 evaluate_interval = 1 if args.dataset=='yelp' or args.ood_finetune else 5
 
 # At any point you can hit Ctrl + C to break out of training early.
