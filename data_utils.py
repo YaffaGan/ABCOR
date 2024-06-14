@@ -49,18 +49,12 @@ def data_load(train_path, valid_path, test_path, dataset=None):
             if i > iid_max:
                 iid_max = i
     
-    if dataset == 'synthetic':
-        n_users = max(uid_max + 1, 1000)
-        n_items = max(iid_max + 1, 1000)
-    elif dataset == 'meituan':
+    if dataset == 'meituan':
        n_users = max(uid_max + 1, 2145)
        n_items = max(iid_max + 1, 7189)    
     elif dataset == 'yelp': 
         n_users = max(uid_max + 1, 7975)
         n_items = max(iid_max + 1, 74722)
-    elif dataset == 'week': 
-        n_users = max(uid_max + 1, 1525)
-        n_items = max(iid_max + 1, 35497)
     else:
         n_users = uid_max + 1
         n_items = iid_max + 1
@@ -82,7 +76,6 @@ def data_load(train_path, valid_path, test_path, dataset=None):
                  shape=(n_users, n_items))
 
     test_x_list = train_list
-#     test_x_list = np.concatenate([train_list, valid_list], 0)
     test_x_data = sp.csr_matrix((np.ones_like(test_x_list[:, 0]),
                  (test_x_list[:, 0], test_x_list[:, 1])), dtype='float64',
                  shape=(n_users, n_items))
