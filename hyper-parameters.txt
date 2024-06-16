@@ -1,0 +1,11 @@
+Meituan:
+ABCORV meituan [3500] [] [1] [] [] 1e-3 0 500 300 0 0.1 1 0.6 500 2000 500 0 1 0 tanh log 0
+
+Meituan:
+ABCORM meituan [4000] [] [1] [] [] 1e-3 0 500 300 0 0.1 1 0.4 500 1500 500 0 1 0 tanh log 0
+
+Yelp:
+ABCORV yelp [6000] [] [1] [] [] 1e-3 0 1500 300 0 0.85 1 0.5 500 300 200 0 1 0 sigmoid log 0
+
+Yelp:
+ABCORM yelp [6000] [] [1] [] [] 1e-3 0 400 120 0 0.75 1 0.5 400 400 250 0 1 0 tanh log 0
