@@ -20,7 +20,6 @@ python main.py --model_name=$1 --dataset=$2 --mlp_dims=$3 --mlp_p1_1_dims=$4 --m
 Train ABCORV on iid meituan:
 
 ```
-cd ./code
 python main.py --model_name=ABCORV --dataset=meituan --mlp_dims=[3500] --mlp_p1_1_dims=[] --mlp_p1_2_dims=[1] --mlp_p2_dims=[] --mlp_p3_dims=[] --lr=1e-3 --wd=0 --batch_size=500 --epochs=300 --total_anneal_steps=0 --anneal_cap=0.1 --CI=1 --dropout=0.6 --Z1_hidden_size=500 --E2_hidden_size=2000 --Z2_hidden_size=500 --bn=0 --sample_freq=1 --regs=0 --act_function=tanh --log_name=log --gpu=0 --cuda
 ```
 
