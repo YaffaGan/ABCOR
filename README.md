@@ -7,7 +7,7 @@
 - numpy 1.24.3
 
 ## Data
-The experimental data are in './data' folder, including, Meituan and Yelp. Due to the large size, 'item_feature.npy' of Yelp is uploaded to [Google drive](https://drive.google.com/drive/folders/1nKk15UlYzGVKCo5yMFVmW4yewbwid0dH?usp=sharing).
+The experimental data, are in './data' folder, including, Meituan. Due to the large size, Yelp is uploaded to ([download link](http://files.grouplens.org/datasets/movielens/ml-20m.zip)).
 
 ## Training
 ```
